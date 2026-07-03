@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 export const ImageUpload: React.FC<{ onImageUpload: (file: File) => void }> = ({ onImageUpload }) => {
   const [dragActive, setDragActive] = useState(false);
