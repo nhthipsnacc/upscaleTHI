@@ -16,16 +16,19 @@ export const upscaleImage = async (imageDataUrl: string): Promise<string> => {
 
     // Use the official inference library
     const result = await hf.imageToImage({
-      inputs: new Uint8Array(await blob.arrayBuffer()),
+      inputs: blob,
       model: 'stabilityai/stable-diffusion-x4-upscaler',
     });
+
+    // Explicitly cast result to Blob for the FileReader
+    const resultBlob = result instanceof Blob ? result : new Blob([result as any]);
 
     // Convert blob back to data URL
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
       reader.onerror = reject;
-      reader.readAsDataURL(result);
+      reader.readAsDataURL(resultBlob);
     });
   } catch (err) {
     console.error("Hugging Face API Error:", err);
