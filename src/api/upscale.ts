@@ -15,9 +15,8 @@ export const upscaleImage = async (imageDataUrl: string): Promise<string> => {
     const blob = await response.blob();
 
     // Use the official inference library
-    // Note: For image-to-image/upscaling, we use the specific model
     const result = await hf.imageToImage({
-      data: blob,
+      inputs: new Uint8Array(await blob.arrayBuffer()),
       model: 'stabilityai/stable-diffusion-x4-upscaler',
     });
 
